@@ -175,20 +175,21 @@ except:
 
     def get_fund_response(fund, query_type):
         name = fund.get('fund_name', '')
+        source_url = fund.get('source_url', f'https://groww.in/mutual-funds/{name.replace(" ", "-").lower()}')
         if query_type == 'expense_ratio':
-            return f"The expense ratio of **{name}** is **{fund.get('expense_ratio', 'N/A')}**.", []
+            return f"The expense ratio of **{name}** is **{fund.get('expense_ratio', 'N/A')}**.\n\n📊 [View on Groww]({source_url})", []
         elif query_type == 'exit_load':
-            return f"The exit load for **{name}** is: {fund.get('exit_load', 'N/A')}", []
+            return f"The exit load for **{name}** is: {fund.get('exit_load', 'N/A')}\n\n📊 [View on Groww]({source_url})", []
         elif query_type == 'minimum_sip':
-            return f"The minimum SIP amount for **{name}** is **{fund.get('minimum_sip', 'N/A')}**.", []
+            return f"The minimum SIP amount for **{name}** is **{fund.get('minimum_sip', 'N/A')}**.\n\n📊 [View on Groww]({source_url})", []
         elif query_type == 'lock_in':
             if 'ELSS' in name:
-                return f"**{name}** has a mandatory **3-year lock-in period** under Section 80C.", []
-            return f"**{name}** has no lock-in period.", []
+                return f"**{name}** has a mandatory **3-year lock-in period** under Section 80C.\n\n📊 [View on Groww]({source_url})", []
+            return f"**{name}** has no lock-in period.\n\n📊 [View on Groww]({source_url})", []
         elif query_type == 'risk_level':
-            return f"**{name}** has a risk level of **'{fund.get('risk_level', 'N/A')}'** according to the Riskometer.", []
+            return f"**{name}** has a risk level of **'{fund.get('risk_level', 'N/A')}'** according to the Riskometer.\n\n📊 [View on Groww]({source_url})", []
         elif query_type == 'benchmark':
-            return f"The benchmark for **{name}** is **{fund.get('benchmark', 'N/A')}**.", []
+            return f"The benchmark for **{name}** is **{fund.get('benchmark', 'N/A')}**.\n\n📊 [View on Groww]({source_url})", []
         elif query_type == 'download':
             return get_download_response(), []
         else:
@@ -197,7 +198,8 @@ except:
                     f"• **Risk Level:** {fund.get('risk_level', 'N/A')}\n"
                     f"• **Minimum SIP:** {fund.get('minimum_sip', 'N/A')}\n"
                     f"• **Exit Load:** {fund.get('exit_load', 'N/A')}\n"
-                    f"• **Benchmark:** {fund.get('benchmark', 'N/A')}"), []
+                    f"• **Benchmark:** {fund.get('benchmark', 'N/A')}\n\n"
+                    f"📊 [View on Groww]({source_url})"), []
 
     def get_all_funds_summary():
         fund_list = '\n'.join([f"• {f['fund_name']}" for f in FUNDS_DATA])
