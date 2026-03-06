@@ -261,8 +261,15 @@ def get_fund_response(fund: Dict, query_type: str) -> Tuple[str, List[Dict]]:
     
     elif query_type == 'download':
         return (
-            f"To download statements for {fund_name}, please visit the fund page on Groww: {fund.get('source_url', 'https://groww.in/mutual-funds')}",
-            [source]
+            "You can download your mutual fund statement through the following methods:\n\n"
+            "**Through the AMC Website**\n"
+            "Visit the Asset Management Company (AMC) website where you invested, log in to your account, and download your account statement from the portfolio or statement section.\n\n"
+            "**Through Registrar Websites (CAMS or KFintech)**\n"
+            "If your fund is serviced by a registrar such as CAMS or KFintech, you can request a consolidated account statement by entering your registered email ID and PAN.\n\n"
+            "**Through Your Investment Platform**\n"
+            "If you invested using a platform such as a broker or investment app, you can download the statement from the portfolio or reports section of that platform.\n\n"
+            "Statements are usually available in PDF format and include details such as transactions, holdings, and NAV history.",
+            []
         )
     
     else:  # general

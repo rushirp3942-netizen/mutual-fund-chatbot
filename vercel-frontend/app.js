@@ -1,6 +1,10 @@
 // Mutual Fund Assistant - Frontend JavaScript
-// Update this URL to your Streamlit backend URL after deployment
-const API_BASE_URL = 'https://your-streamlit-app.streamlit.app';
+// Configure your API backend URL here
+// For local testing: 'http://localhost:5000'
+// For Render deployment: 'https://your-app.onrender.com'
+const API_BASE_URL = window.location.hostname === 'localhost' 
+    ? 'http://localhost:5000' 
+    : 'https://your-api-backend.onrender.com';
 
 // Fund data (embedded for static deployment)
 const FUNDS_DATA = [
@@ -142,7 +146,7 @@ function setupChatInput() {
     });
 }
 
-function sendMessage() {
+async function sendMessage() {
     const input = document.getElementById('message-input');
     const message = input.value.trim();
     
@@ -155,12 +159,33 @@ function sendMessage() {
     // Show typing indicator
     showTypingIndicator();
     
-    // Get response
-    setTimeout(() => {
-        const response = getBotResponse(message);
-        hideTypingIndicator();
-        addMessage(response.content, 'assistant', response.sources);
-    }, 1000);
+    try {
+        // Try to call API backend first
+        const response = await fetch(`${API_BASE_URL}/chat`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ message: message })
+        });
+        
+        if (response.ok) {
+            const data = await response.json();
+            hideTypingIndicator();
+            addMessage(data.message.content, 'assistant', data.sources || []);
+        } else {
+            // Fallback to local response
+            throw new Error('API failed');
+        }
+    } catch (error) {
+        // Use local fallback response
+        console.log('API unavailable, using local fallback:', error);
+        setTimeout(() => {
+            const response = getBotResponse(message);
+            hideTypingIndicator();
+            addMessage(response.content, 'assistant', response.sources);
+        }, 500);
+    }
 }
 
 function sendSuggestion(text) {
@@ -289,6 +314,9 @@ function identifyQueryType(query) {
     if (queryLower.includes('benchmark') || queryLower.includes('index')) {
         return 'benchmark';
     }
+    if (queryLower.includes('download') || queryLower.includes('statement') || queryLower.includes('how to get')) {
+        return 'download';
+    }
     
     return 'general';
 }
@@ -325,6 +353,16 @@ function getFundResponse(fund, queryType) {
         case 'benchmark':
             content = `The benchmark for ${fundName} is ${fund.benchmark}.`;
             break;
+        case 'download':
+            content = "You can download your mutual fund statement through the following methods:\n\n" +
+                     "**Through the AMC Website**\n" +
+                     "Visit the Asset Management Company (AMC) website where you invested, log in to your account, and download your account statement from the portfolio or statement section.\n\n" +
+                     "**Through Registrar Websites (CAMS or KFintech)**\n" +
+                     "If your fund is serviced by a registrar such as CAMS or KFintech, you can request a consolidated account statement by entering your registered email ID and PAN.\n\n" +
+                     "**Through Your Investment Platform**\n" +
+                     "If you invested using a platform such as a broker or investment app, you can download the statement from the portfolio or reports section of that platform.\n\n" +
+                     "Statements are usually available in PDF format and include details such as transactions, holdings, and NAV history.";
+            return { content, sources: [] };
         default:
             content = `Here is the information for ${fundName}:\n\n` +
                      `• NAV: ${fund.nav}\n` +
