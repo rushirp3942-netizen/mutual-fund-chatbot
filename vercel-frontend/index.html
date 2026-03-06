@@ -22,6 +22,17 @@
 
         <!-- Chat Page -->
         <div id="chat-page" class="page active">
+            <div class="streamlit-embed">
+                <iframe 
+                    src="https://mutual-fund-chatbot-fmjq2yjcdz6avgyapvbxpp.streamlit.app/?embed=true"
+                    style="width: 100%; height: 85vh; border: none;"
+                    allow="camera;microphone"
+                ></iframe>
+            </div>
+        </div>
+
+        <!-- Chat Page (Hidden - using Streamlit embed instead) -->
+        <div id="chat-page-old" class="page" style="display: none;">
             <div class="chat-container">
                 <!-- Messages Area -->
                 <div class="messages-area" id="messages-area">
