@@ -1,0 +1,32 @@
+[
+  {
+    "query": "What is the expense ratio of SBI ELSS Tax Saver Fund?",
+    "blocked": true,
+    "reason": "low_relevance",
+    "response": "I don't have enough relevant information to answer that question accurately.\n\nThe available data doesn't seem to contain the specific details you're looking for.\n\nI can tell you about:\n• Expense ratios, exit loads, and minimum SIP amounts\n• Risk levels and benchmark indices\n• Fund categories and AMC information\n\nWould you like to ask about a different aspect?"
+  },
+  {
+    "query": "Should I invest in HDFC Mid Cap Fund?",
+    "blocked": true,
+    "reason": "investment_advice",
+    "response": "I can't provide investment advice or recommendations. I'm designed to share factual information about mutual funds in my knowledge base.\n\nI can tell you about:\n• Expense ratios and fees\n• Risk levels and benchmarks\n• Minimum investment amounts\n• Fund categories and types\n\nFor investment advice, please consult a SEBI-registered investment advisor.\n\nIs there specific fund information I can help you with?"
+  },
+  {
+    "query": "What is the lock-in period for ELSS funds?",
+    "blocked": true,
+    "reason": "low_relevance",
+    "response": "I don't have enough relevant information to answer that question accurately.\n\nThe available data doesn't seem to contain the specific details you're looking for.\n\nI can tell you about:\n• Expense ratios, exit loads, and minimum SIP amounts\n• Risk levels and benchmark indices\n• Fund categories and AMC information\n\nWould you like to ask about a different aspect?"
+  },
+  {
+    "query": "How to download mutual fund statements?",
+    "blocked": true,
+    "reason": "low_relevance",
+    "response": "I don't have enough relevant information to answer that question accurately.\n\nThe available data doesn't seem to contain the specific details you're looking for.\n\nI can tell you about:\n• Expense ratios, exit loads, and minimum SIP amounts\n• Risk levels and benchmark indices\n• Fund categories and AMC information\n\nWould you like to ask about a different aspect?"
+  },
+  {
+    "query": "What is the weather today?",
+    "blocked": true,
+    "reason": "non_financial",
+    "response": "I can only answer questions about mutual funds in my knowledge base. I don't have information about stocks, crypto, real estate, or other investment types.\n\nI can help you with:\n• Mutual fund details and comparisons\n• Fund categories (ELSS, Large Cap, Mid Cap, Small Cap)\n• Expense ratios, risk levels, and benchmarks\n• How to download fund documents\n\nIs there a mutual fund you'd like to know about?"
+  }
+]

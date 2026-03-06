@@ -1,0 +1,348 @@
+{% extends "base.html" %}
+
+{% block title %}{{ fund.fund_name if fund else 'Fund Not Found' }} - Mutual Fund Assistant{% endblock %}
+
+{% block content %}
+<div class="fund-detail-container">
+    {% if fund %}
+    <!-- Fund Header -->
+    <div class="fund-header">
+        <a href="/funds" class="back-link">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M19 12H5M12 19l-7-7 7-7"/>
+            </svg>
+            Back to Funds
+        </a>
+        <h1 class="fund-title">{{ fund.fund_name }}</h1>
+        <div class="fund-category">{{ fund.fund_category }}</div>
+    </div>
+
+    <!-- Key Metrics Cards -->
+    <div class="metrics-grid">
+        <div class="metric-card">
+            <div class="metric-label">NAV</div>
+            <div class="metric-value">{{ fund.nav }}</div>
+        </div>
+        <div class="metric-card">
+            <div class="metric-label">Expense Ratio</div>
+            <div class="metric-value">{{ fund.expense_ratio }}</div>
+        </div>
+        <div class="metric-card">
+            <div class="metric-label">Risk Level</div>
+            <div class="metric-value">{{ fund.risk_level }}</div>
+        </div>
+        <div class="metric-card">
+            <div class="metric-label">Minimum SIP</div>
+            <div class="metric-value">{{ fund.minimum_sip }}</div>
+        </div>
+    </div>
+
+    <!-- Fund Details -->
+    <div class="details-section">
+        <h2>Fund Details</h2>
+        <div class="details-grid">
+            <div class="detail-item">
+                <span class="detail-label">Fund House</span>
+                <span class="detail-value">{{ fund.amc if fund.amc else 'N/A' }}</span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">Category</span>
+                <span class="detail-value">{{ fund.category if fund.category else 'N/A' }}</span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">Benchmark</span>
+                <span class="detail-value">{{ fund.benchmark }}</span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">Exit Load</span>
+                <span class="detail-value">{{ (fund.exit_load|clean_text) if fund.exit_load else 'No exit load' }}</span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">Lock-in Period</span>
+                <span class="detail-value">{{ fund.lock_in_period if fund.lock_in_period else 'No lock-in' }}</span>
+            </div>
+            <div class="detail-item">
+                <span class="detail-label">Fund Size</span>
+                <span class="detail-value">{{ fund.fund_size if fund.fund_size else 'N/A' }}</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Returns Section -->
+    {% if fund.returns %}
+    <div class="returns-section">
+        <h2>Returns</h2>
+        <div class="returns-grid">
+            {% set one_year = fund.returns.get('one_year') if fund.returns is mapping else None %}
+            {% set three_year = fund.returns.get('three_year') if fund.returns is mapping else None %}
+            {% set five_year = fund.returns.get('five_year') if fund.returns is mapping else None %}
+            
+            {% if one_year %}
+            <div class="return-card">
+                <div class="return-period">1 Year</div>
+                <div class="return-value" style="{% if one_year.startswith('-') %}color: #ef4444;{% else %}color: #10b981;{% endif %}">
+                    {{ one_year }}
+                </div>
+            </div>
+            {% endif %}
+            {% if three_year %}
+            <div class="return-card">
+                <div class="return-period">3 Year</div>
+                <div class="return-value" style="{% if three_year.startswith('-') %}color: #ef4444;{% else %}color: #10b981;{% endif %}">
+                    {{ three_year }}
+                </div>
+            </div>
+            {% endif %}
+            {% if five_year %}
+            <div class="return-card">
+                <div class="return-period">5 Year</div>
+                <div class="return-value" style="{% if five_year.startswith('-') %}color: #ef4444;{% else %}color: #10b981;{% endif %}">
+                    {{ five_year }}
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Source Link -->
+    <div class="source-section">
+        <h2>Source</h2>
+        <a href="{{ fund.source_url }}" target="_blank" class="source-link">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/>
+            </svg>
+            View on Groww
+        </a>
+    </div>
+
+    <!-- Ask About This Fund -->
+    <div class="ask-section">
+        <h2>Have Questions?</h2>
+        <p>Ask our AI assistant about this fund</p>
+        <a href="/" class="ask-btn">Ask AI Assistant</a>
+    </div>
+
+    {% else %}
+    <!-- Fund Not Found -->
+    <div class="not-found">
+        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="color: #9ca3af; margin-bottom: 1rem;">
+            <circle cx="12" cy="12" r="10"/>
+            <line x1="12" y1="8" x2="12" y2="12"/>
+            <line x1="12" y1="16" x2="12.01" y2="16"/>
+        </svg>
+        <h1>Fund Not Found</h1>
+        <p>The mutual fund you're looking for doesn't exist in our database.</p>
+        <a href="/funds" class="ask-btn" style="margin-top: 1rem; display: inline-block;">Browse All Funds</a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<style>
+.fund-detail-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+}
+
+.back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #6b7280;
+    text-decoration: none;
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+    transition: color 0.2s;
+}
+
+.back-link:hover {
+    color: #1f2937;
+}
+
+.fund-header {
+    margin-bottom: 2rem;
+}
+
+.fund-title {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: #1f2937;
+    margin: 0.5rem 0;
+}
+
+.fund-category {
+    display: inline-block;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+.metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.metric-card {
+    background: white;
+    padding: 1.25rem;
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    text-align: center;
+}
+
+.metric-label {
+    font-size: 0.85rem;
+    color: #6b7280;
+    margin-bottom: 0.5rem;
+}
+
+.metric-value {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #1f2937;
+}
+
+.details-section,
+.returns-section,
+.source-section,
+.ask-section {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    margin-bottom: 1.5rem;
+}
+
+.details-section h2,
+.returns-section h2,
+.source-section h2,
+.ask-section h2 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #1f2937;
+    margin-bottom: 1rem;
+}
+
+.details-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+}
+
+.detail-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid #f3f4f6;
+    gap: 1rem;
+}
+
+.detail-value {
+    text-align: right;
+    max-width: 60%;
+    word-wrap: break-word;
+}
+
+.detail-item:last-child {
+    border-bottom: none;
+}
+
+.detail-label {
+    color: #6b7280;
+    font-size: 0.9rem;
+}
+
+.detail-value {
+    color: #1f2937;
+    font-weight: 500;
+    font-size: 0.9rem;
+    text-align: right;
+}
+
+.returns-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 1rem;
+}
+
+.return-card {
+    text-align: center;
+    padding: 1rem;
+    background: #f9fafb;
+    border-radius: 8px;
+}
+
+.return-period {
+    font-size: 0.85rem;
+    color: #6b7280;
+    margin-bottom: 0.5rem;
+}
+
+.return-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.source-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #667eea;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s;
+}
+
+.source-link:hover {
+    color: #764ba2;
+}
+
+.ask-section {
+    text-align: center;
+}
+
+.ask-section p {
+    color: #6b7280;
+    margin-bottom: 1rem;
+}
+
+.ask-btn {
+    display: inline-block;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.ask-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+.not-found {
+    text-align: center;
+    padding: 4rem 2rem;
+}
+
+.not-found h1 {
+    font-size: 1.5rem;
+    color: #1f2937;
+    margin-bottom: 0.5rem;
+}
+
+.not-found p {
+    color: #6b7280;
+}
+</style>
+{% endblock %}

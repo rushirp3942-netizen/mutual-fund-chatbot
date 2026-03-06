@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mutual Fund Assistant</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Navigation -->
+        <nav class="navbar">
+            <div class="nav-brand">
+                <div class="logo">MF</div>
+                <span>Mutual Fund Assistant</span>
+            </div>
+            <div class="nav-links">
+                <a href="#" class="nav-link active" data-page="chat">Chat</a>
+                <a href="#" class="nav-link" data-page="funds">Browse Funds</a>
+            </div>
+        </nav>
+
+        <!-- Chat Page -->
+        <div id="chat-page" class="page active">
+            <div class="chat-container">
+                <!-- Messages Area -->
+                <div class="messages-area" id="messages-area">
+                    <!-- Welcome Message -->
+                    <div class="message assistant-message">
+                        <div class="message-avatar assistant-avatar">AI</div>
+                        <div class="message-content">
+                            <div class="message-bubble">
+                                <p>Hello! I'm your Mutual Fund Assistant. I can help you with:</p>
+                                <ul style="margin: 10px 0; padding-left: 20px;">
+                                    <li>Expense ratios and fees</li>
+                                    <li>Risk levels and benchmarks</li>
+                                    <li>Minimum SIP amounts</li>
+                                    <li>Fund comparisons</li>
+                                </ul>
+                                <p>What would you like to know?</p>
+                            </div>
+                            <span class="message-time" id="welcome-time"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Typing Indicator -->
+                <div class="typing-indicator" id="typing-indicator" style="display: none;">
+                    <div class="message-avatar assistant-avatar">AI</div>
+                    <div class="typing-bubble">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </div>
+
+                <!-- Suggestions -->
+                <div class="suggestions" id="suggestions">
+                    <button class="suggestion-chip" onclick="sendSuggestion('What is the expense ratio of SBI ELSS?')">
+                        Expense ratio of SBI ELSS?
+                    </button>
+                    <button class="suggestion-chip" onclick="sendSuggestion('What is the minimum SIP for Axis Small Cap?')">
+                        Minimum SIP for Axis?
+                    </button>
+                    <button class="suggestion-chip" onclick="sendSuggestion('Tell me about the risk level of Tata Small Cap')">
+                        Risk level of Tata?
+                    </button>
+                </div>
+
+                <!-- Input Area -->
+                <div class="input-area">
+                    <div class="input-wrapper">
+                        <input 
+                            type="text" 
+                            class="chat-input" 
+                            id="message-input"
+                            placeholder="Ask about mutual funds..."
+                            autocomplete="off"
+                        >
+                        <button class="send-btn" id="send-btn" onclick="sendMessage()">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="22" y1="2" x2="11" y2="13"/>
+                                <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Funds Page -->
+        <div id="funds-page" class="page">
+            <div class="funds-container">
+                <h1 class="funds-title">Browse Mutual Funds</h1>
+                <p class="funds-subtitle">Explore our collection of {{fund_count}} mutual funds</p>
+                
+                <!-- Search and Filter -->
+                <div class="search-filter-bar">
+                    <div class="search-box">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="11" cy="11" r="8"/>
+                            <path d="m21 21-4.35-4.35"/>
+                        </svg>
+                        <input type="text" id="fund-search" placeholder="Search funds..." onkeyup="filterFunds()">
+                    </div>
+                </div>
+
+                <!-- Funds Grid -->
+                <div class="funds-grid" id="funds-grid">
+                    <!-- Funds will be loaded here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

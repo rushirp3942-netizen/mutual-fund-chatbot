@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+
+{% block title %}Chat - Mutual Fund Assistant{% endblock %}
+
+{% block content %}
+<div class="chat-container">
+    <!-- Chat Header -->
+    <div class="chat-header">
+        <div class="chat-header-info">
+            <div class="chat-avatar">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/>
+                </svg>
+            </div>
+            <div class="chat-header-text">
+                <h2 class="chat-title">Mutual Fund Assistant</h2>
+                <span class="chat-status" id="connection-status">Connecting...</span>
+            </div>
+        </div>
+        <div class="chat-actions">
+            <button class="action-btn" title="Clear chat" onclick="clearChat()">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <!-- Messages Area -->
+    <div class="messages-area" id="messages-area">
+        <!-- Welcome Message -->
+        <div class="message assistant-message">
+            <div class="message-avatar assistant-avatar">AI</div>
+            <div class="message-content">
+                <div class="message-bubble">
+                    <p>Hello! I'm your Mutual Fund Assistant. I can help you with:</p>
+                    <ul style="margin: 10px 0; padding-left: 20px;">
+                        <li>Expense ratios and fees</li>
+                        <li>Risk levels and benchmarks</li>
+                        <li>Minimum SIP amounts</li>
+                        <li>Fund comparisons</li>
+                    </ul>
+                    <p>What would you like to know?</p>
+                </div>
+                <span class="message-time">{{ now }}</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Typing Indicator -->
+    <div class="typing-indicator" id="typing-indicator" style="display: none;">
+        <div class="message-avatar assistant-avatar">AI</div>
+        <div class="typing-bubble">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </div>
+
+    <!-- Suggestions -->
+    <div class="suggestions" id="suggestions">
+        <button class="suggestion-chip" onclick="sendSuggestion('What is the expense ratio of SBI ELSS?')">
+            Expense ratio of SBI ELSS?
+        </button>
+        <button class="suggestion-chip" onclick="sendSuggestion('What is the minimum SIP for Axis Small Cap?')">
+            Minimum SIP for Axis?
+        </button>
+        <button class="suggestion-chip" onclick="sendSuggestion('Tell me about the risk level of Tata Small Cap')">
+            Risk level of Tata?
+        </button>
+    </div>
+
+    <!-- Input Area -->
+    <div class="input-area">
+        <div class="input-wrapper">
+            <input 
+                type="text" 
+                class="chat-input" 
+                id="message-input"
+                placeholder="Ask about mutual funds..."
+                autocomplete="off"
+            >
+            
+            <button class="send-btn" id="send-btn" onclick="sendMessage()">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="22" y1="2" x2="11" y2="13"/>
+                    <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+                </svg>
+            </button>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="{{ url_for('static', filename='js/chat.js') }}"></script>
+{% endblock %}

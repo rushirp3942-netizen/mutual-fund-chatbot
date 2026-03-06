@@ -1,0 +1,12 @@
+# Backend Requirements
+
+fastapi>=0.104.0
+uvicorn[standard]>=0.24.0
+websockets>=12.0
+pydantic>=2.5.0
+python-multipart>=0.0.6
+
+# Previous phase dependencies (relative paths)
+# phase1_data_collection
+# phase3_retrieval
+# phase4_llm_integration

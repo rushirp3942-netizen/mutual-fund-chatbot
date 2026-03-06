@@ -1,0 +1,130 @@
+{% extends "base.html" %}
+
+{% block title %}Browse Funds - Mutual Fund Assistant{% endblock %}
+
+{% block content %}
+<div class="funds-container">
+    <!-- Header -->
+    <div class="funds-header">
+        <h1>Mutual Funds</h1>
+        <p>Browse and search {{ funds|length }} available funds</p>
+    </div>
+
+    <!-- Search -->
+    <div class="search-section">
+        <div class="search-box">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="8"/>
+                <path d="M21 21l-4.35-4.35"/>
+            </svg>
+            <input 
+                type="text" 
+                id="fund-search"
+                placeholder="Search funds by name, AMC, or category..."
+                onkeyup="searchFunds(this.value)"
+            >
+        </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="filters">
+        <button class="filter-btn active" onclick="filterFunds('all')">All</button>
+        <button class="filter-btn" onclick="filterFunds('equity')">Equity</button>
+        <button class="filter-btn" onclick="filterFunds('debt')">Debt</button>
+        <button class="filter-btn" onclick="filterFunds('hybrid')">Hybrid</button>
+        <button class="filter-btn" onclick="filterFunds('elss')">ELSS</button>
+    </div>
+
+    <!-- Fund Cards Grid -->
+    <div class="funds-grid" id="funds-grid">
+        {% for fund in funds %}
+        <div class="fund-card" data-category="{{ fund.category|lower }}">
+            <div class="fund-header">
+                <h3 class="fund-name">{{ fund.fund_name }}</h3>
+                <span class="fund-category">{{ fund.category or 'N/A' }}</span>
+            </div>
+            
+            <div class="fund-metrics">
+                <div class="metric">
+                    <span class="metric-label">Expense Ratio</span>
+                    <span class="metric-value">{{ fund.expense_ratio or 'N/A' }}</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Risk Level</span>
+                    <span class="metric-value risk-{{ fund.risk_level|lower|replace(' ', '-') }}">{{ fund.risk_level or 'N/A' }}</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Min SIP</span>
+                    <span class="metric-value">{{ fund.minimum_sip or 'N/A' }}</span>
+                </div>
+            </div>
+            
+            <div class="fund-footer">
+                <span class="fund-benchmark">{{ fund.benchmark or 'N/A' }}</span>
+                <a href="/fund/{{ fund.fund_name|replace(' ', '-') }}" class="view-btn">View Details</a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Empty State -->
+    <div class="empty-state" id="empty-state" style="display: none;">
+        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <circle cx="11" cy="11" r="8"/>
+            <path d="M21 21l-4.35-4.35"/>
+        </svg>
+        <h3>No funds found</h3>
+        <p>Try adjusting your search or filters</p>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+function searchFunds(query) {
+    const cards = document.querySelectorAll('.fund-card');
+    const emptyState = document.getElementById('empty-state');
+    let visibleCount = 0;
+    
+    query = query.toLowerCase();
+    
+    cards.forEach(card => {
+        const name = card.querySelector('.fund-name').textContent.toLowerCase();
+        const category = card.querySelector('.fund-category').textContent.toLowerCase();
+        
+        if (name.includes(query) || category.includes(query)) {
+            card.style.display = 'block';
+            visibleCount++;
+        } else {
+            card.style.display = 'none';
+        }
+    });
+    
+    emptyState.style.display = visibleCount === 0 ? 'block' : 'none';
+}
+
+function filterFunds(category) {
+    const cards = document.querySelectorAll('.fund-card');
+    const buttons = document.querySelectorAll('.filter-btn');
+    
+    // Update active button
+    buttons.forEach(btn => {
+        btn.classList.remove('active');
+        if (btn.textContent.toLowerCase() === category || 
+            (category === 'all' && btn.textContent === 'All')) {
+            btn.classList.add('active');
+        }
+    });
+    
+    // Filter cards
+    cards.forEach(card => {
+        if (category === 'all') {
+            card.style.display = 'block';
+        } else {
+            const cardCategory = card.dataset.category;
+            card.style.display = cardCategory && cardCategory.includes(category) ? 'block' : 'none';
+        }
+    });
+}
+</script>
+{% endblock %}
